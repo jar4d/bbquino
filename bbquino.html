@@ -2,10 +2,125 @@
 
 <body>
 
-{{>temperaturePlot}}	
-
 </body>
 
-<template name = "temperaturePlot">
 
+
+<template name = "appTemplate">
+{{#ionBody}} <!--all apps must have this at heart-->
+	{{#ionNavView}} <!--takes care of animations between pages-->
+
+
+		{{>yield}} <!--yield sets space for content from other templates -->
+
+	{{/ionNavView}}
+{{/ionBody}}
+
+{{#ionTabs class="tabs-positive tabs-icon-top"}}
+
+  	{{> ionTab title="Gauges" path="gauges" iconOff="ios-stopwatch" iconOn="ios-stopwatch"}}
+  	{{> ionTab title="Graphs" path="graphs" iconOff="ion-help-circled" iconOn="ion-help-circled"}}
+	{{> ionTab title="Settings" path="settings" iconOff="ios-gear-outline" iconOn="ios-gear-outline"}}
+
+{{/ionTabs}}
+
+</template>
+
+
+<template name = "gauges">
+{{#contentFor "headerTitle"}}
+  <h1 class="title">Notifications</h1>
+{{/contentFor}}
+
+{{#ionView}}
+  {{#ionContent}}
+
+<h1>Gauges</h1>  
+
+{{/ionContent}}
+{{/ionView}}
+</template>
+
+
+<template name = "graphs">
+{{#contentFor "headerTitle"}}
+  <h1 class="title">Notifications</h1>
+{{/contentFor}}
+
+{{#ionView}}
+  {{#ionContent}}
+
+<h1>Graphs</h1>  
+    <canvas id="myChart" width="400" height="400"></canvas>
+
+{{/ionContent}}
+{{/ionView}}
+</template>
+
+
+<template name = "settings">
+{{#contentFor "headerTitle"}}
+  <h1 class="title">Notifications</h1>
+{{/contentFor}}
+
+{{#ionView}}
+  {{#ionContent}}
+
+<h1>Settings</h1> 
+
+  <h1>MeteorJS + Noble + IMUduino</h1>
+  <div id="actions">
+    <button id="btnStartScanning">Start Scanning</button>
+    <button id="btnStopScanning">Stop Scanning</button>
+    <button id="btnPurge">Purge</button>
+  </div>
+
+  <table class="tables">
+    <thead>
+      <tr>
+        <th>BLE Peripherals</th>
+      </tr>
+    </thead>
+    <tbody>
+    {{# each peripherals}}
+      {{> peripheral}}
+    {{/each}}
+    </tbody>
+  </table>
+
+{{/ionContent}}
+{{/ionView}}
+</template>
+
+<template name="peripheral">
+  <tr>
+    <td>
+      <h2>{{advertisement.localName}}</h2>
+      <p>{{uuid}}</p>
+      <div class="stats">
+        <ul>
+          <li>{{rssi}}<span>RSSI</span></li>
+          <li>1<span>Services</span></li>
+          <li>2<span>Characteristics</span></li>
+        </ul>
+      </div>
+      <div>
+        <label class="label-switch">
+          <input data-uuid="{{uuid}}" class="peripheral-status" type="checkbox" {{checkIf status}} />
+          <div class="checkbox"></div>
+        </label>
+      </div>
+      
+      <div class="stats">
+        <ul>
+        {{# each yawpitchroll}}
+          <li>{{yaw}}<span>Yaw</span></li>
+          <li>{{pitch}}<span>Pitch</span></li>
+          <li>{{roll}}<span>Roll</span></li>
+        {{/each}}
+        </ul>
+      </div>
+      
+    </td>
+  </tr>
 </template>
