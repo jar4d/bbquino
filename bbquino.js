@@ -72,6 +72,8 @@ Meteor.subscribe('peripherals');
     },
     yawpitchroll: function (uuid) {
       return YawPitchRoll.find({}, {limit: 1, sort: {timestamp: -1}});
+      console.log(YawPitchRoll.find({}, {limit: 1, sort: {timestamp: -1}}));
+
     }
   });
 
